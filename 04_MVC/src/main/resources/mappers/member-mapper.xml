@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+	
+	<insert id="registerMember" parameterType="Member">
+		INSERT INTO member(id,pwd,name,addr)
+		VALUES(#{id},#{pwd},#{name},#{addr})
+	</insert>
+	
+	<select id="allMember">
+		SELECT id, pwd, name, addr FROM member
+	</select>
+	
+	<select id="login" parameterType="Member">
+		SELECT id, pwd, name, addr FROM member WHERE id=#{id} AND pwd=#{pwd}
+	</select>
+	
+	<update id="updateMember" parameterType="Member">
+		UPDATE member
+			<set>
+				<if test="pwd!=null">
+				pwd=#{pwd}
+				</if>
+				<if test="name!null">
+				name=#{name}
+				</if>
+				<if test="addr!null">
+				addr=#{addr}
+				</if>
+			</set>
+		WHERE id=#{id}
+	</update>
+</mapper>
