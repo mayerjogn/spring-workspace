@@ -1,5 +1,10 @@
 package com.kh.mvc.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,11 +25,15 @@ public class MemberController {
 	}
 	@RequestMapping("find")
 	public String find(String keyword, Model model) {
-		System.out.println(keyword);
 		// 서비스 - 비즈니스 로직 처리!
 		// --> list 값! 데이터 바인딩 -> Model!
 		//model.addAllAttributes("list",list);
-		return "find_ok";// "find_fail"
+		List<Member> list=service.findMember(keyword);
+		if(list.size() > 0) {
+			model.addAttribute("list",list);
+			return "find_ok";
+		}
+		return "find_fail";
 	}
 	
 	@RequestMapping("register")
@@ -33,8 +42,7 @@ public class MemberController {
 	}
 	@RequestMapping("signUp")
 	public String signUp(Member member) {
-		System.out.println(member);
-		// 비즈니스 로직
+		service.registerMember(member);
 		return "redirect:/"; // index.jsp가 views 밖에있어서
 	}
 	
@@ -47,33 +55,46 @@ public class MemberController {
 	
 	@RequestMapping("signIn")
 	// signIn - 비즈니스 로직 포함 : 파라미터 값 -> HttpServletRequest request
-	public String signIn() {
-		
-		return "";
+	public String signIn(Member vo, HttpSession session) { // 이렇게도됨 
+		Member member = service.login(vo);
+		//HttpSession session = request.getSession(); 아님 HttpServletRequest request 이렇게
+		if(member!=null) {
+			session.setAttribute("vo", member);
+		}
+		return "login_result";
 	}
 	
 	@RequestMapping("allMember")
 	// allMember - 비즈니스 로직 포함, 데이터 바인딩 - 모델
 	// --> return "find_ok";
-	public String allMember() {
+	public String allMember(Model model) {
+		List<Member> list = service.showAllMember();
+		model.addAttribute("list",list);
 		return "find_ok";
 	}
 	
 	@RequestMapping("logout")
 	// logout - 로그아웃 기능
-	public String logout() {
-		return "";
+	public String logout(HttpSession session) {
+		if(session.getAttribute("vo")!=null) {
+			session.invalidate();
+		}
+		return "redirect:/";
 	}
 	
 	@RequestMapping("update")	
 	// update - 페이지 이동
 	public String update() {
-		return "";
+		return "update";
 	}
 	
-	@RequestMapping(updateMember)
+	@RequestMapping("updateMember")
 	// updateMember - 비즈니스 로직 포함 -> 파라미터 request 필요
-	public String updateMember() {
-		return "";
+	public String updateMember(Member vo, HttpSession session) {
+		service.updateMember(vo);
+		if(session.getAttribute("vo")!=null) {
+			session.setAttribute("vo", vo);
+		}
+		return "redirect:/";
 	}
 }

@@ -2,32 +2,41 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="memberMapper">
 	
+	<resultMap type="Member" id="memberMap">
+		<id property="id" column="id"/>
+		<result property="pwd" column="password"/>
+		<result property="name" column="name"/>
+		<result property="addr" column="address"/>
+	</resultMap>
+	
 	<insert id="registerMember" parameterType="Member">
-		INSERT INTO member(id,pwd,name,addr)
+		INSERT INTO member(id,password,name,address)
 		VALUES(#{id},#{pwd},#{name},#{addr})
 	</insert>
 	
-	<select id="allMember">
-		SELECT id, pwd, name, addr FROM member
+	<select id="showAllMember" resultMap="memberMap">
+		SELECT id, password, name, address FROM member
 	</select>
 	
-	<select id="login" parameterType="Member">
-		SELECT id, pwd, name, addr FROM member WHERE id=#{id} AND pwd=#{pwd}
+	<select id="findMember" resultMap="memberMap" parameterType="String">
+		SELECT id, password, name, address
+		FROM member
+		<where>
+			<if test="keyword != null ">
+				id LIKE '%' || #{keyword} || '%'
+				OR name LIKE '%' || #{keyword} || '%'
+				OR address LIKE '%' || #{keyword} || '%'
+			</if>
+		</where>	
+	</select>
+		
+	<select id="login" parameterType="Member" resultMap="memberMap">
+		SELECT id, password, name, address FROM member WHERE id=#{id} AND password=#{pwd}
 	</select>
 	
 	<update id="updateMember" parameterType="Member">
 		UPDATE member
-			<set>
-				<if test="pwd!=null">
-				pwd=#{pwd}
-				</if>
-				<if test="name!null">
-				name=#{name}
-				</if>
-				<if test="addr!null">
-				addr=#{addr}
-				</if>
-			</set>
+		SET password=#{pwd}, name=#{name}, address=#{addr}		
 		WHERE id=#{id}
 	</update>
 </mapper>

@@ -22,8 +22,7 @@
 				<li><a href="allMember">전체 회원 보기</a></li>
 				<li><a href="logout">로그아웃</a></li>
 				<li><a href="update">회원 정보 수정</a></li>
-			</c:otherwise>
-			
+			</c:otherwise>			
 		</c:choose>
 	</ul>
 

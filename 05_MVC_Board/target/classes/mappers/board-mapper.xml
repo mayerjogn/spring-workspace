@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+<!--<resultMap type="board" id="boardMap">
+	<result property="no" column="no"/>
+	<result property="title" column="title"/>
+	<result property="content" column="content"/>
+	<result property="writer" column="writer"/>
+	<result property="regdate" column="regdate"/>
+	</resultMap>-->
+
+	<insert id="insert" parameterType="Board" useGeneratedKeys="true" keyProperty="no" keyColumn="no">
+		INSERT INTO board(no, title, content, writer)
+		VALUES(SEQ_BOARD.NEXTVAL,#{title},#{content},#{writer})
+	</insert>
+	
+	<select id="selectAll" resultType="Board">
+		SELECT no, title, content, writer, regdate 
+		FROM board
+	</select>
+	<!-- 
+	<select id="select" parameterType="String">
+		SELECT no, title, content, writer, regdate FROM board
+	</select>
+	
+	<update id="update" parameterType="Board">
+		UPDATE board
+		SET no=#{no}, title=#{title}, content=#{content}, writer=#{writer}, regdate=#{regdate}
+		WHERE writer=#{writer}
+	</update>
+	
+	<delete id="delete" parameterType="Board">
+		DELETE FROM board
+	</delete> -->
+	
+</mapper>
