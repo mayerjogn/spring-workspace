@@ -24,12 +24,13 @@ pageEncoding="UTF-8"%>
   </head>
   <body>
     <div class="container">
-      <h1>게시물 정보</h1>
-      <form>
-
+      <h1>게시물 수정</h1>
+      <form action="/board/update?=${vo.no}" method="post" enctype="multipart/form-data">
+      	<input type="hidden" name="no" value="${vo.no}"/>
+      	<input type="hidden" name="url" value="${vo.url}"/>
         <div class="form-group">
           <label for="title">Title</label>
-          <input type="text" name="title" id="title" readonly class="form-control" value="${vo.title}"/>
+          <input type="text" name="title" id="title" class="form-control" value="${vo.title}"/>
         </div>
 
         <div class="form-group">
@@ -41,18 +42,21 @@ pageEncoding="UTF-8"%>
             rows="10"
             class="form-control"
             style="resize: none"
-            readonly
           >${vo.content}</textarea>
-           <!-- <a href="/board/download?filename=${fn:replace(vo.url, '/upload/', '')}"><img src="${vo.url}"/></a> -->
-        	<a href="${vo.url}" download><img src="${vo.url}"/></a>
+         
         </div>
-
+        
+		<div class="form-group">
+			<label for="uploadFile">Add File</label>
+			<input class="form-control" type="file" id="uploadFile" name="uploadFile" accept="image/*"/>	
+		</div>
+		
         <div class="form-group">
           <label for="writer">Writer</label>
           <input type="text" id="writer" name="writer" class="form-control" readonly value="${vo.writer}"/>
         </div>
-		<a class="btn btn-outline-warning" href="/board/update?no=${vo.no}">수정</a>        
-        <a class="btn btn-outling-danger" href="/board/delete?no=${vo.no}">삭제</a>
+        <button type="submit" class="btn btn-outline-warning">수정</button>
+        
       </form>
     </div>
   </body>

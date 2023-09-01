@@ -25,10 +25,10 @@ pageEncoding="UTF-8"%>
     <div class="container">
       <h1>게시물 등록</h1>
 
-      <form action="/board/insert" method="post">
+      <form action="/board/insert" method="post" enctype="multipart/form-data"><!-- 파일 업로드 -->
         <div class="form-group">
           <label for="title">Title</label>
-          <input type="text" name="title" id="title" class="form-control" />
+          <input type="text" name="title" id="title" class="form-control"/>
         </div>
 
         <div class="form-group">
@@ -42,6 +42,10 @@ pageEncoding="UTF-8"%>
             style="resize: none"
           ></textarea>
         </div>
+       <div class="form-group">
+			<label for="uploadFile">Add File</label>
+			<input class="form-control" type="file" id="uploadFile" name="uploadFile" accept="image/*"/>	
+		</div>
 
         <div class="form-group">
           <label for="writer">Writer</label>

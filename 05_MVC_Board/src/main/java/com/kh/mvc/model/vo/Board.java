@@ -1,8 +1,8 @@
 package com.kh.mvc.model.vo;
 
-
-
 import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,4 +18,7 @@ public class Board {
 	private String content;
 	private String writer;
 	private Date regdate;	
+	
+	private MultipartFile uploadFile; // 스프링에서 제공하는 파일 업로드 필드
+	private String url;
 }
