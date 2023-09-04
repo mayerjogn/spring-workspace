@@ -41,8 +41,7 @@ public class BoardController {
 	@PostMapping("/insert")
 	public String insert(Board vo) throws IllegalStateException, IOException {
 	fileUpload(vo);
-	
-	
+		
 	service.insertboard(vo);
 	return "redirect:/board/list";
 	}
