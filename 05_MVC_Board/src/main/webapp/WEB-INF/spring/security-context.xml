@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+
+			
+	<bean id="customAccessDenied" class="com.kh.mvc.CustomAccessDeniedHandler" />	
+	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="loginSuccess" class="com.kh.mvc.LoginSuccessHandler"/>
+	<context:component-scan base-package="com.kh.mvc" />		
+	<bean id="memberService" class="com.kh.mvc.model.service.MemberService" />	
+		
+	<security:http> <!-- 로그인 로그아웃 관련 사항이 여기 다들어감 -->
+	<security:intercept-url pattern="/board/insert" access="permitAll" />
+		<security:intercept-url pattern="/board/insert" access="hasRole('ROLE_MEMBER')" />			
+		<security:intercept-url pattern="/board/update" access="hasRole('ROLE_MEMBER')" />			
+		<security:form-login login-page="/member/login"
+			authentication-success-handler-ref="loginSuccess" /><!-- 여기에 주입 -->
+
+		<security:csrf disabled="true" />
+		<security:logout logout-url="/logout" invalidate-session="true" />
+		<security:access-denied-handler	ref="customAccessDenied" />	
+
+		
+	</security:http>
+
+	<security:authentication-manager> <!-- 인증 매니저 관련사항 -->
+		<security:authentication-provider user-service-ref="memberService">
+			<security:password-encoder hash="bcrypt" />
+
+			
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>  

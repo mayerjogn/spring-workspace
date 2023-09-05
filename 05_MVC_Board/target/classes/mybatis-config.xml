@@ -6,7 +6,8 @@
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="com.kh.mvc.model.vo.Board" alias="Board"/>
+		<package name="com.kh.mvc.model.vo"/> 
+		<!-- vo가 추가될때마다 package가 설정해줌 별칭은 클래스명 자체가 별칭이 됨 -->
 	</typeAliases>
 	
 	<!-- 단위 테스트를 위해서 환경 추가 -->
@@ -24,6 +25,7 @@
 	
 	<mappers>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/member-mapper.xml"/>
 	</mappers>
 	
 </configuration>

@@ -45,7 +45,6 @@ pageEncoding="UTF-8"%>
             style="resize: none"
             readonly
           >${vo.content}</textarea>
-           <!-- <a href="/board/download?filename=${fn:replace(vo.url, '/upload/', '')}"><img src="${vo.url}"/></a> -->
         	<a href="${vo.url}" download><img src="${vo.url}"/></a>
         </div>
 		
@@ -54,12 +53,24 @@ pageEncoding="UTF-8"%>
           <label for="writer">Writer</label>
           <input type="text" id="writer" name="writer" class="form-control" readonly value="${vo.writer}"/>
         </div>
-        <sec:authentication property="principal" var="info"/>
-        <c:if test="${vo.writer eq info.username}"> <!-- login을하면 웹상 session에 남겨놔야함 -->
-		<a class="btn btn-outline-warning" href="/board/update?no=${vo.no}">수정</a>        
-        <a class="btn btn-outling-danger" href="/board/delete?no=${vo.no}">삭제</a>
-        </c:if>
+        
+        
+        <!-- principal : 계정정보를 가지고 있음
+        		만약에 로그인 정보가 없으면 anonymousUser가(문자열) 들어감
+        		
+        	  *authorize 권한과 관련된것
+ 			  *authentication 인증과 관련된것, 계정 정보
+        		 -->
+        <sec:authorize access="hasRole('ROLE_MEMBER')">  
+       <<sec:authentication property="principal" var="info"/>  		
+        	<c:if test="${vo.writer eq info.username}"> <!-- login을하면 웹상 session에 남겨놔야함 그래야 로그인된 상태로 이런저런것을 할수있음 -->
+				<a class="btn btn-outline-warning" href="/board/update?no=${vo.no}">수정</a>        
+        		<a class="btn btn-outling-danger" href="/board/delete?no=${vo.no}">삭제</a>
+        	</c:if>
+      	 </sec:authorize>
+        
       </form>
     </div>
   </body>
 </html>
+

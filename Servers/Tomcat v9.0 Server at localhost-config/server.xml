@@ -162,8 +162,9 @@
 
       
       
+      <Context docBase="D:\spring-workspace\05_MVC_Board\src\main\webapp\upload" path="/upload" reloadable="true"/>
       
-      <Context docBase="05_MVC_Board" path="/" reloadable="true" source="org.eclipse.jst.jee.server:05_MVC_Board"/></Host>
+      <Context docBase="07_RestFulAPI" path="/api" reloadable="true" source="org.eclipse.jst.jee.server:07_RestFulAPI"/></Host>
     </Engine>
   </Service>
 </Server>

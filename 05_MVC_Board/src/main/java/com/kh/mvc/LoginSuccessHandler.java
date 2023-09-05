@@ -1,35 +1,29 @@
 package com.kh.mvc;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.kh.mvc.model.vo.Member;
 
 public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		List<String> roleList = new ArrayList();
-		
-		authentication.getAuthorities().forEach(auth->{
-			roleList.add(auth.getAuthority());
-		});
-		if(roleList.contains("ROLE_MEMBER")) {
-			response.sendRedirect("/member");
-			return;
-		}
-		if(roleList.contains("ROLE_ADMIN")) {
-			response.sendRedirect("/admin");
-			return;
-		}
-		
+//		HttpSession session = request.getSession();
+//		Member member = null;
+//		if (authentication.getPrincipal() instanceof Member) {
+//			member = (Member) authentication.getPrincipal();
+//		}
+		// 로그인 한 정보를 session 에 저장했기 때문에 나중에 view.jsp에서 property="principal" 로 로그인한 사용자 정보에 접근할 수 있는 것이다.
+//		session.setAttribute("userInfo", member);
 		response.sendRedirect("/board/list");
 	}
 

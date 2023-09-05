@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="phone">
+
+	<insert id="insert" parameterType="Phone">
+		INSERT INTO phone(num, model, price, vcode)
+		VALUES(#{num}, #{model}, #{price}, #{vcode})
+	</insert>
+	
+	
+	<!-- 동적쿼리 Dynamic Query : selectAll + selectOne(num) 둘다 사용할수 있게 -->
+	<select id="select" parameterType="String" resultType="Phone">
+<!-- 	SELECT num, model, price
+	FROM phone
+		<where>
+			<if test="num !=null">
+				num=#{num} 						
+			</if>
+		</where> -->	
+		SELECT *
+		FROM phone
+		WHERE num=#{num}
+	</select>
+	
+	<!-- Dynamic Query foreach -->
+	<delete id="delete" parameterType="list">
+		DELETE FROM phone
+		WHERE num = #{num}
+	</delete>
+	
+	<update id="update" parameterType="Phone">
+		UPDATE phone
+		SET price=#{price}, vcode=#{vcode}
+		WHERE num=#{num}
+	</update>
+	
+	
+	<!-- Dynamic Query : id와 pw 둘다 입력했을때랑 id만 입력했을때를 같이 처리할수 있게-->
+	<select id="selectUser"></select>
+</mapper>
