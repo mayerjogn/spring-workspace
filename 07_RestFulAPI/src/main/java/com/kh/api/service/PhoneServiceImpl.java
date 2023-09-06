@@ -14,6 +14,7 @@ public class PhoneServiceImpl implements PhoneService {
 
 	@Autowired
 	private PhoneDAO dao;
+	
 	@Override
 	public int insert(Phone phone) {
 		return dao.insert(phone);
@@ -41,7 +42,7 @@ public class PhoneServiceImpl implements PhoneService {
 
 	@Override
 	public UserInfo select(UserInfo user) {
-		return null;
+		return dao.select(user);
 	}
 
 }

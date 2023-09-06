@@ -7,9 +7,20 @@
 		VALUES(#{num}, #{model}, #{price}, #{vcode})
 	</insert>
 	
+	<resultMap type="phone" id="phonewithCompany">
+		<id column="num" property="num"/>
+		<result column="model" property="model"/>
+		<result column="price" property="price"/>
+		<result column="vcode" property="vcode"/>
+		
+		<association property="company" javaType="company">
+			<id column="vcode" property="vcode"/>
+			<result column="vendor" property="vendor"/>
+		</association>
+	</resultMap>
 	
 	<!-- 동적쿼리 Dynamic Query : selectAll + selectOne(num) 둘다 사용할수 있게 -->
-	<select id="select" parameterType="String" resultType="Phone">
+	<select id="select" parameterType="String" resultMap="phonewithCompany">
 <!-- 	SELECT num, model, price
 	FROM phone
 		<where>
@@ -17,24 +28,41 @@
 				num=#{num} 						
 			</if>
 		</where> -->	
-		SELECT *
-		FROM phone
-		WHERE num=#{num}
+		SELECT num, model, price, vcode, vendor
+		FROM phone 
+		JOIN company USING (vcode) 
+		<if test="num!=null">
+			WHERE num=#{num}
+		</if>
 	</select>
 	
-	<!-- Dynamic Query foreach -->
-	<delete id="delete" parameterType="list">
+	
+	<delete id="delete" parameterType="String">
 		DELETE FROM phone
 		WHERE num = #{num}
 	</delete>
 	
 	<update id="update" parameterType="Phone">
 		UPDATE phone
-		SET price=#{price}, vcode=#{vcode}
+		SET model=#{model}, price=#{price}, vcode=#{vcode}
 		WHERE num=#{num}
 	</update>
 	
 	
 	<!-- Dynamic Query : id와 pw 둘다 입력했을때랑 id만 입력했을때를 같이 처리할수 있게-->
-	<select id="selectUser"></select>
+	<select id="selectUser" parameterType="UserInfo" resultType="UserInfo">
+		SELECT id, pw
+		FROM UserInfo
+		WHERE id=#{id} 
+		<if test="pw!=null">
+			AND	pw=#{pw}
+		</if>
+		
+	</select> 
 </mapper>
+
+
+
+
+
+

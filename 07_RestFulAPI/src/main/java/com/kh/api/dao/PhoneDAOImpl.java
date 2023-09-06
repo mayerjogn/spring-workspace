@@ -11,6 +11,7 @@ import com.kh.api.model.UserInfo;
 
 @Repository
 public class PhoneDAOImpl implements PhoneDAO{
+	
 	@Autowired
 	private SqlSessionTemplate session;
 	
@@ -36,12 +37,12 @@ public class PhoneDAOImpl implements PhoneDAO{
 
 	@Override
 	public List<Phone> select() {
-		return session.selectList("phone.select");
+		return session.selectList("phone.select", null);
 	}
 
 	@Override
 	public UserInfo select(UserInfo user) {
-		return null;
+		return session.selectOne("phone.select", user);
 	}
 
 }
