@@ -14,12 +14,10 @@ public class MemberDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	public int registerMember(Member vo) {
-		
+	public int registerMember(Member vo) {	
 		return sqlSession.insert("memberMapper.registerMember",vo);
-		
 	}
-		public List<Member> showAllMember() {
+	public List<Member> showAllMember() {
 		return sqlSession.selectList("memberMapper.showAllMember");
 	}
 	
